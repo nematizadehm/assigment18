@@ -1,0 +1,61 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div class="container">
+            <form>
+               <lable class="form-lable"> استان </lable>
+               <select id="ostan" class="form-select" onchange="display_cities(this)"></select>
+               <select id="shahr" class="form-select"></select>
+            </form>
+        </div>
+        <script>
+            var cities;
+            function display_provinces(ostan_string)
+            {
+                ostans= JSON.parse(ostans_string);
+                for (var i=0; i< ostans_lenght; i++)
+             {
+                 var option = document.createElement("option")
+                 option.innerHTML= ostans[i].name;
+                 option.value= ostans[i].id;
+                 ostans_tag.appendchild(option);
+             }
+            }
+          
+            async function read_data_provinces(file)
+            { 
+                 let x = await fetch(file);
+                 let y = await x.text();
+                 display_provinces(y)
+        }
+
+            function display_cities(selected_ostan)
+            {
+              var shahr_tag = document.getElementById("shahr")
+              shahr_tag.innerHTML="";
+
+                for (var i=0; i< cities.lenght; i++)
+                if(cities[i].province_id == selected_ostan.value)
+             {
+                 var option = document.createElement("option")
+                 option.innerHTML= cities[i].name;
+                 option.value= cities[i].id;
+                 ostans_tag.appendchild(option);
+             }
+            }
+           
+            async function read_data_cities(file)
+            {
+                let x = await fetch(file);
+                 let y = await x.text();
+                 cities= JSON.parse(y)
+                
+            }
+          
+            read_data_provinces ("https://raw.githubusercontent.com/sajaddp/list-of-cities-in-Iran/master/json/provinces.json")
+            read_data_cities( "https://raw.githubusercontent.com/sajaddp/list-of-cities-in-Iran/master/json/cities.json ")
+        </script>
+    </body>
+</html>
